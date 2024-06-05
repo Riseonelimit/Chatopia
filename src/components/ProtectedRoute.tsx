@@ -1,8 +1,8 @@
 import { useUser } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
-import { ReactProps } from "../types/react";
+import { ReactNode } from "react";
 
-const ProtectedRoute = ({ children }: ReactProps) => {
+const ProtectedRoute = ({ children }: { children: ReactNode }) => {
     const { isSignedIn } = useUser();
     const navigate = useNavigate();
 

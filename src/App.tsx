@@ -1,11 +1,12 @@
 import { ClerkProvider } from "@clerk/clerk-react";
 import { dark } from "@clerk/themes";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { CLERK_PUBLISHABLE_KEY } from "./utils/const";
 import LandingPage from "./pages/LandingPage";
-import SocketProvider from "./providers/SocketProvider";
 import ChatProvider from "./providers/ChatProvider";
 import MessageProvider from "./providers/MessageProvider";
+import SocketProvider from "./providers/SocketProvider";
+import UserDataProvider from "./providers/UserDataProvider";
+import { CLERK_PUBLISHABLE_KEY } from "./utils/const";
 
 function App() {
     const navigate = useNavigate();
@@ -18,13 +19,15 @@ function App() {
             signInUrl="/login"
             appearance={{ baseTheme: dark }}
         >
-            <SocketProvider>
-                <ChatProvider>
-                    <MessageProvider>
-                        {pathname == "/" ? <LandingPage /> : <Outlet />}
-                    </MessageProvider>
-                </ChatProvider>
-            </SocketProvider>
+            <UserDataProvider>
+                <SocketProvider>
+                    <ChatProvider>
+                        <MessageProvider>
+                            {pathname == "/" ? <LandingPage /> : <Outlet />}
+                        </MessageProvider>
+                    </ChatProvider>
+                </SocketProvider>
+            </UserDataProvider>
         </ClerkProvider>
     );
 }

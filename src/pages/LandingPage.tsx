@@ -1,17 +1,21 @@
 import { useClerk, useUser } from "@clerk/clerk-react";
+import { useNavigate } from "react-router-dom";
 import bg from "../assets/background_blur.svg";
 import grid from "../assets/grid.svg";
-import cheeky from "../assets/emojie_cheeky.svg";
-import love from "../assets/love.svg";
 import chat from "../assets/chat.svg";
 import drink from "../assets/drink.svg";
+import cheeky from "../assets/emojie_cheeky.svg";
+import love from "../assets/love.svg";
 import { HOMEPAGE_URL } from "../utils/const";
-import { useNavigate } from "react-router-dom";
+import useUserData from "../hooks/useUserData";
 
 const LandingPage = () => {
     const { openSignIn, openSignUp } = useClerk();
     const { isSignedIn } = useUser();
+
+    const { isAuth } = useUserData();
     const navigate = useNavigate();
+
     return (
         <section className=" w-full h-screen overflow-y-hidden bg-background relative flex flex-col items-center justify-center">
             <div className="z-[100] flexbox flex-col gap-10 w-[40%] text-center">
@@ -30,8 +34,8 @@ const LandingPage = () => {
 
                 <div className="flexbox gap-3">
                     <button
-                        onClick={(e) => {
-                            if (isSignedIn) {
+                        onClick={() => {
+                            if (isSignedIn && isAuth) {
                                 navigate(HOMEPAGE_URL);
                             }
                             openSignIn({ redirectUrl: HOMEPAGE_URL });
@@ -41,8 +45,8 @@ const LandingPage = () => {
                         LogIn
                     </button>
                     <button
-                        onClick={(e) => {
-                            if (isSignedIn) {
+                        onClick={() => {
+                            if (isSignedIn && isAuth) {
                                 navigate(HOMEPAGE_URL);
                             }
                             openSignUp({ redirectUrl: HOMEPAGE_URL });

@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard.tsx";
 import SignUpPage from "./pages/SignUpPage.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
 import ProtectedRoute from "./components/ProtectedRoute.tsx";
+import AuthPage from "./pages/AuthPage.tsx";
 
 const router = createBrowserRouter([
     {
@@ -22,11 +23,11 @@ const router = createBrowserRouter([
                 ),
             },
             {
-                path: "/signin",
+                path: "signin",
                 element: <SignUpPage />,
             },
             {
-                path: "/login",
+                path: "login",
                 element: <LoginPage />,
             },
         ],

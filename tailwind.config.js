@@ -31,11 +31,19 @@ export default {
                     },
                     "100%": { opacity: 1 },
                 },
+                receive_chat: {
+                    "0%": {
+                        opacity: 0,
+                        transform: ["translate(-20%)"],
+                    },
+                    "100%": { opacity: 1 },
+                },
             },
             animation: {
                 "pulse-slow": " wave_zoom 18s infinite ease-in-out",
                 "fade-in": " fade_in 0.3s  ease-in",
-                "sender-chat-add": " sender_chat_add 0.2s  ",
+                "send-chat": " sender_chat_add 0.2s  ",
+                "receive-chat": " receive_chat 0.2s  ",
             },
         },
     },

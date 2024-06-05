@@ -1,20 +1,21 @@
 import { useUser } from "@clerk/clerk-react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import useSocket from "../hooks/useSocket";
-import { ChatMessage } from "../pages/Dashboard";
+import useUserData from "../hooks/useUserData";
+import { MessageContext } from "../providers/MessageProvider";
+import useChat from "../hooks/useChat";
 
-interface ReactArgs {
-    setMessageArray: React.Dispatch<React.SetStateAction<Array<ChatMessage>>>;
-    messageArray: Array<ChatMessage>;
-}
-
-const MessageInput = ({ setMessageArray, messageArray }: ReactArgs) => {
+const MessageInput = () => {
     const { user } = useUser();
     const [chatMessage, setChatMessage] = useState("");
 
+    const { currentChatInfo } = useChat();
+    const { messageArray, setMessageArray } = useContext(MessageContext);
+
+    const { userInfo } = useUserData();
     const { sendMessage } = useSocket();
     return (
-        <div className="p-3 w-full h-[10%] bg-zinc-800/70 duration-150  flexbox rounded-2xl">
+        <div className="p-3  w-full h-[10%] bg-zinc-800/70 duration-150  flexbox rounded-2xl">
             <textarea
                 value={chatMessage}
                 placeholder={`Type a message ${user?.fullName}`}
@@ -34,14 +35,14 @@ const MessageInput = ({ setMessageArray, messageArray }: ReactArgs) => {
                     // console.log(ref.current);
 
                     const message = {
-                        chatId: 10,
-                        senderId: localStorage.getItem("uuid") || "0",
-                        receiverId: "1",
+                        chatId: currentChatInfo?.id || "",
+                        senderId: userInfo?.id || "",
+                        receiverId: currentChatInfo?.id || "",
                         message: chatMessage,
                         type: "text",
                         userName: user?.username || "You",
                     };
-                    if (sendMessage) sendMessage(+message.senderId, message);
+                    if (sendMessage) sendMessage(message.senderId, message);
 
                     setMessageArray([...messageArray, message]);
                     console.log("done");

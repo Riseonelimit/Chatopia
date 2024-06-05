@@ -1,25 +1,45 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
 import useSocket from "../hooks/useSocket";
+import { CurrentChatUser } from "../types/user";
 
-export const chatContext = createContext<string[] | null>(null);
+interface ChatContext {
+    onlineUsers: string[] | null;
+    currentChatInfo: CurrentChatUser | null;
+    setCurrentChatInfo: React.Dispatch<
+        React.SetStateAction<CurrentChatUser | null>
+    >;
+}
+
+export const ChatContext = createContext<ChatContext>({
+    onlineUsers: null,
+    setCurrentChatInfo: () => {},
+    currentChatInfo: null,
+});
 
 const ChatProvider = ({ children }: { children: ReactNode }) => {
     const { socket } = useSocket();
 
     const [onlineUsers, setOnlineUsers] = useState([]);
+    const [currentChatInfo, setCurrentChatInfo] =
+        useState<CurrentChatUser | null>(null);
 
     useEffect(() => {
-        socket?.on("online-users", (args): any => {
-            console.log("getusers");
+        socket?.on("online-users", (args) => {
+            console.log(args);
             setOnlineUsers(args);
-            console.log({ args });
         });
-    }, [socket, onlineUsers]);
+
+        return () => {
+            socket?.off("online-users", () => {});
+        };
+    }, [socket, onlineUsers, setOnlineUsers]);
 
     return (
-        <chatContext.Provider value={onlineUsers}>
+        <ChatContext.Provider
+            value={{ onlineUsers, currentChatInfo, setCurrentChatInfo }}
+        >
             {children}
-        </chatContext.Provider>
+        </ChatContext.Provider>
     );
 };
 
