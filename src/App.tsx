@@ -7,6 +7,7 @@ import MessageProvider from "./providers/MessageProvider";
 import SocketProvider from "./providers/SocketProvider";
 import UserDataProvider from "./providers/UserDataProvider";
 import { CLERK_PUBLISHABLE_KEY } from "./utils/const";
+import DialogBoxProvider from "./providers/DialogBoxProvider";
 
 function App() {
     const navigate = useNavigate();
@@ -19,15 +20,17 @@ function App() {
             signInUrl="/login"
             appearance={{ baseTheme: dark }}
         >
-            <UserDataProvider>
-                <SocketProvider>
-                    <ChatProvider>
-                        <MessageProvider>
-                            {pathname == "/" ? <LandingPage /> : <Outlet />}
-                        </MessageProvider>
-                    </ChatProvider>
-                </SocketProvider>
-            </UserDataProvider>
+            <DialogBoxProvider>
+                <UserDataProvider>
+                    <SocketProvider>
+                        <ChatProvider>
+                            <MessageProvider>
+                                {pathname == "/" ? <LandingPage /> : <Outlet />}
+                            </MessageProvider>
+                        </ChatProvider>
+                    </SocketProvider>
+                </UserDataProvider>
+            </DialogBoxProvider>
         </ClerkProvider>
     );
 }

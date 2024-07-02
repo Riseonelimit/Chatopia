@@ -9,7 +9,7 @@ interface MessageContextProp {
     lastMessage: ChatMessage | null;
     setLastMessage: React.Dispatch<React.SetStateAction<ChatMessage | null>>;
 }
-
+    
 export const MessageContext = createContext<MessageContextProp>({
     messageArray: [],
     setMessageArray: () => {},

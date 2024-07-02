@@ -2,6 +2,8 @@ import useChat from "../../hooks/useChat";
 import drink from "/src/assets/drink.svg";
 
 const ChatInfo = () => {
+    
+    const { onlineUsers } = useChat();
     const { currentChatInfo } = useChat();
 
     if (!currentChatInfo) {
@@ -13,7 +15,7 @@ const ChatInfo = () => {
                 <img
                     src={currentChatInfo?.Profile?.image || drink}
                     alt=""
-                    className=" w-full h-full object-cover"
+                    className=" w-full h-full object-cover animate-fade-in"
                 />
             </div>
             <div className=" col-span-4 w-full flexbox flex-col items-start  ">
@@ -21,7 +23,9 @@ const ChatInfo = () => {
                     {currentChatInfo?.name}
                 </h2>
                 <p className=" text-xs line-clamp-1 ">
-                    {currentChatInfo?.isOnline ? "Online" : "Offline"}
+                    {onlineUsers?.includes(currentChatInfo.id)
+                        ? "Online"
+                        : "Offline"}
                 </p>
             </div>
         </div>

@@ -1,7 +1,10 @@
-import { useClerk } from "@clerk/clerk-react";
+import { UserButton, useClerk } from "@clerk/clerk-react";
 import { Bell, LogOut, UserPlus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useDialogBox } from "../../hooks/useDialogBox";
 import useSocket from "../../hooks/useSocket";
+import useUserData from "../../hooks/useUserData";
+import { BoxType } from "../../providers/DialogBoxProvider";
 
 const ChatNavbar = () => {
     const { isConnected } = useSocket();
@@ -9,6 +12,9 @@ const ChatNavbar = () => {
     const navigate = useNavigate();
 
     const { socket } = useSocket();
+
+    const { setIsAuth } = useUserData();
+    const { setIsOpen, setBoxType } = useDialogBox();
 
     return (
         <div className=" z-50 p-5 w-3/4 bg-primary/10 backdrop-blur-md flexbox gap-3 rounded-3xl border-[2px] border-primary/70">
@@ -33,13 +39,19 @@ const ChatNavbar = () => {
             </div>
             <div className="p-2 rounded-xl border-[1px] border-primary hover:cursor-pointer">
                 <UserPlus
+                    onClick={() => {
+                        setIsOpen(true);
+                        setBoxType(BoxType.ADD_FRIEND);
+                    }}
                     absoluteStrokeWidth
                     className=" text-purple-300 hover:text-white duration-150"
                 />
             </div>
-            <button
+
+            {/* <button
                 onClick={() => {
                     socket?.disconnect();
+                    setIsAuth(false);
                     signOut(() => {
                         navigate("/", { replace: true });
                     });
@@ -50,7 +62,11 @@ const ChatNavbar = () => {
                     absoluteStrokeWidth
                     className=" text-purple-300 group-hover:text-red-400 duration-175 duration-150"
                 />
-            </button>
+            </button> */}
+
+            <div className="p-2 rounded-xl border-[1px] border-primary hover:cursor-pointer">
+                <UserButton afterSignOutUrl="/" userProfileMode="modal" />
+            </div>
         </div>
     );
 };

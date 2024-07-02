@@ -2,6 +2,7 @@ import bg from "../assets/dashboard_blur.svg";
 import grid from "../assets/leaves.svg";
 import ChatContainer from "../components/chat/ChatContainer";
 import ChatNavbar from "../components/chat/ChatNavbar";
+import { DialogBox } from "../components/dialogbox/DialogBox";
 
 const Dashboard = () => {
     return (
@@ -24,6 +25,8 @@ const Dashboard = () => {
                 draggable={false}
                 className="absolute z-10 select-none top-0 object-cover w-full h-full opacity-80 animate-pulse-slow duration-1000 "
             />
+
+            <DialogBox />
         </section>
     );
 };

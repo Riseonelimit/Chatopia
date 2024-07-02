@@ -2,12 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
-
-@layer base{
-    h1{
-        @apply text-7xl leading-[1.5em]
-    }
-}
+.dialog-enter {
+    opacity: 0;
+  }
+.dialog-enter-active {
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 300ms, transform 300ms;
+  }
+  .dialog-enter-done {
+    opacity: 1;
+  }
+.dialog-exit {
+    opacity: 1;
+  }
+.dialog-exit-active {
+    opacity: 0;
+    transition: opacity 300ms, transform 300ms;
+  }
+  .dialog-exit-done {
+    opacity: 0;
+    transition: opacity 300ms, transform 300ms;
+  }
 
 @layer components{
     .primary-btn{
@@ -23,7 +39,11 @@
 }
 
 @layer base{
+    h1{
+        @apply text-7xl leading-[1.5em]
+    }
     .flexbox{
         @apply flex items-center justify-center
     }
+   
 }

@@ -1,19 +1,20 @@
 import { useClerk, useUser } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 import bg from "../assets/background_blur.svg";
-import grid from "../assets/grid.svg";
 import chat from "../assets/chat.svg";
 import drink from "../assets/drink.svg";
 import cheeky from "../assets/emojie_cheeky.svg";
+import grid from "../assets/grid.svg";
 import love from "../assets/love.svg";
-import { HOMEPAGE_URL } from "../utils/const";
 import useUserData from "../hooks/useUserData";
+import { HOMEPAGE_URL } from "../utils/const";
 
 const LandingPage = () => {
     const { openSignIn, openSignUp } = useClerk();
     const { isSignedIn } = useUser();
 
     const { isAuth } = useUserData();
+
     const navigate = useNavigate();
 
     return (
@@ -31,11 +32,11 @@ const LandingPage = () => {
                     </span>{" "}
                     in a new and exciting way - join us today!
                 </p>
-
+                {isAuth ? <h1>True</h1> : <h1>False</h1>}
                 <div className="flexbox gap-3">
                     <button
                         onClick={() => {
-                            if (isSignedIn && isAuth) {
+                            if (isSignedIn) {
                                 navigate(HOMEPAGE_URL);
                             }
                             openSignIn({ redirectUrl: HOMEPAGE_URL });
@@ -46,7 +47,7 @@ const LandingPage = () => {
                     </button>
                     <button
                         onClick={() => {
-                            if (isSignedIn && isAuth) {
+                            if (isSignedIn) {
                                 navigate(HOMEPAGE_URL);
                             }
                             openSignUp({ redirectUrl: HOMEPAGE_URL });

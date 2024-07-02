@@ -48,8 +48,6 @@ const ChatBox = () => {
             <div className=" w-full h-[90%] flexbox flex-col  justify-start gap-2 rounded-2xl overflow-y-auto no-scrollbar">
                 <ReceiverChat message="hey bro" />
                 <ReceiverChat message="helllo broooo" />
-                <ReceiverChat message="helllo broooo" />
-                <ReceiverChat message="helllo broooo" />
                 <SenderChat message="whatsppp brooo" />
                 <SenderChat message="whatsppp brooo" />
 

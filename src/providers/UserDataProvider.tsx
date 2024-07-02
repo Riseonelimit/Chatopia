@@ -1,8 +1,9 @@
 import { useUser } from "@clerk/clerk-react";
 import { ReactNode, createContext, useEffect, useState } from "react";
-import { authUser } from "../api/auth/user";
-import { addUser } from "../api/POST";
 import { useNavigate } from "react-router-dom";
+import { addUser } from "../api/POST";
+import { authUser } from "../api/auth/user";
+import useSocket from "../hooks/useSocket";
 import { User } from "../types/user";
 
 interface UserContext {
@@ -30,16 +31,20 @@ const UserDataProvider = ({ children }: { children: ReactNode }) => {
     const [isAuth, setIsAuth] = useState<boolean>(false);
     const [userInfo, setUserInfo] = useState<User | null>(null);
     const [friendList, setFriendList] = useState<User[] | null>(null);
-    const [userGroups, setUserGroups] = useState(null);
+    const [userChats, setUserChats] = useState(null);
 
     const navigate = useNavigate();
 
     const { isSignedIn, user } = useUser();
 
+    const { socket } = useSocket();
+
     useEffect(() => {
-        const foo = async () => {
+        const checkIfUserExist = async () => {
+            console.log("auth");
+
             const res = await authUser(user?.emailAddresses[0].emailAddress);
-            console.log(res);
+
             if (res.success && res.data) {
                 setIsAuth(true);
                 setUserInfo(res.data?.userInfo);
@@ -58,7 +63,14 @@ const UserDataProvider = ({ children }: { children: ReactNode }) => {
                 }
             }
         };
-        if (isSignedIn && !isAuth) foo();
+        if (isSignedIn && !isAuth) checkIfUserExist();
+
+        if (!isSignedIn) {
+            console.log("signed out called ");
+
+            socket?.disconnect();
+            setIsAuth(false);
+        }
     }, [
         user,
         navigate,
@@ -69,6 +81,7 @@ const UserDataProvider = ({ children }: { children: ReactNode }) => {
         setUserInfo,
         friendList,
         setFriendList,
+        socket,
     ]);
 
     useEffect(() => {}, [isSignedIn, user]);

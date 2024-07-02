@@ -8,16 +8,16 @@ export interface User {
     Profile?: Profile;
 }
 
-export interface CurrentChatUser extends User {
-    isOnline: boolean | undefined;
-}
-
 export interface Profile {
     id: string;
     about: string;
     image: string;
     theme: THEME;
 }
+export interface CurrentChatUser extends User {
+    isOnline: boolean | undefined;
+}
+
 
 enum THEME {
     LIGHT,

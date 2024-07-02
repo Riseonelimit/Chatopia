@@ -1,13 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
-import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import Dashboard from "./pages/Dashboard.tsx";
-import SignUpPage from "./pages/SignUpPage.tsx";
-import LoginPage from "./pages/LoginPage.tsx";
+import App from "./App.tsx";
 import ProtectedRoute from "./components/ProtectedRoute.tsx";
-import AuthPage from "./pages/AuthPage.tsx";
+import "./index.css";
+import Dashboard from "./pages/Dashboard.tsx";
+import LoginPage from "./pages/LoginPage.tsx";
+import SignUpPage from "./pages/SignUpPage.tsx";
 
 const router = createBrowserRouter([
     {

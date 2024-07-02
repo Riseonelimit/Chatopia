@@ -1,5 +1,3 @@
-import { transform } from "typescript";
-
 /** @type {import('tailwindcss').Config} */
 export default {
     content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
@@ -38,11 +36,19 @@ export default {
                     },
                     "100%": { opacity: 1 },
                 },
+                fade_top: {
+                    "0%": {
+                        opacity: 0,
+                        transform: ["translateY(20%)"],
+                    },
+                    "100%": { opacity: 1 },
+                },
             },
             animation: {
                 "pulse-slow": " wave_zoom 18s infinite ease-in-out",
                 "fade-in": " fade_in 0.3s  ease-in",
                 "send-chat": " sender_chat_add 0.2s  ",
+                "fade-top": " fade_top 0.2s  ",
                 "receive-chat": " receive_chat 0.2s  ",
             },
         },

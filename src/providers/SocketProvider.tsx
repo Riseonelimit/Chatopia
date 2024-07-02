@@ -37,8 +37,8 @@ const SocketProvider = ({ children }: ReactProps) => {
             setIsConnected(true);
         });
         connection.on("disconnect", () => {
-            // connection.emit("disconnect-user");
-            // connection.emit("get-online-users");
+            console.log("even-disconnect");
+            
             setIsConnected(false);
         });
 
