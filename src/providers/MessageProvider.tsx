@@ -18,16 +18,19 @@ export const MessageContext = createContext<MessageContextProp>({
 });
 
 const MessageProvider = ({ children }: { children: ReactNode }) => {
-    const [messageArray, setMessageArray] = useState<Array<ChatMessage>>([]);
+    const [messageArray, setMessageArray] = useState<ChatMessage[]>([]);
     const [lastMessage, setLastMessage] = useState<ChatMessage | null>(null);
     const { socket } = useSocket();
     const { userInfo } = useUserData();
 
     useEffect(() => {
-        socket?.on(`chat:receive-message:${userInfo?.id}`, (message) => {
-            console.log(message.message);
-            setMessageArray([...messageArray, message]);
-        });
+        socket?.on(
+            `chat:receive-message:${userInfo?.id}`,
+            (message: ChatMessage) => {
+                console.log({ content: message.content });
+                setMessageArray([...messageArray, message]);
+            }
+        );
 
         return () => {
             socket?.off(`chat:receive-message:${localStorage.getItem("uuid")}`);

@@ -4,6 +4,7 @@ import useSocket from "../hooks/useSocket";
 import useUserData from "../hooks/useUserData";
 import { MessageContext } from "../providers/MessageProvider";
 import useChat from "../hooks/useChat";
+import { ChatMessage, MessageType } from "../types/chat";
 
 const MessageInput = () => {
     const { user } = useUser();
@@ -34,13 +35,14 @@ const MessageInput = () => {
                 onClick={() => {
                     // console.log(ref.current);
 
-                    const message = {
+                    const message: ChatMessage = {
                         chatId: currentChatInfo?.id || "",
                         senderId: userInfo?.id || "",
                         receiverId: currentChatInfo?.id || "",
-                        message: chatMessage,
-                        type: "text",
-                        userName: user?.username || "You",
+                        content: chatMessage,
+                        type: MessageType.IMAGE,
+                        isGroup: false,
+                        userName: user?.fullName || user?.username || "",
                     };
                     if (sendMessage) sendMessage(message.senderId, message);
 

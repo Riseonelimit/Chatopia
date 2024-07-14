@@ -2,7 +2,14 @@ export type ChatMessage = {
     chatId: string;
     senderId: string;
     receiverId: string;
-    message: string;
     userName: string;
-    type: string;
+    type: MessageType;
+    content: string;
+    isGroup: boolean;
 };
+
+export enum MessageType {
+    TEXT,
+    IMAGE,
+}
+  

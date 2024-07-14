@@ -29,7 +29,6 @@ const ChatContainer = () => {
 
             {/* CHAT-SECTION */}
             <ChatBox />
-
             <ChatInfo />
         </div>
     );

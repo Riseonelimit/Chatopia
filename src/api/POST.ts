@@ -1,11 +1,8 @@
+import { User } from "../types/user";
 import { ApiResult } from "./auth/user";
 import { axiosInstance } from "./axios";
 
-export const addUser = async (userData: {
-    name: string | null | undefined;
-    email: string | null | undefined;
-    image: string | null | undefined;
-}): Promise<ApiResult> => {
+export const addUser = async (userData: User): Promise<ApiResult> => {
     try {
         const { data, status } = await axiosInstance.post(
             "/user/new_user",

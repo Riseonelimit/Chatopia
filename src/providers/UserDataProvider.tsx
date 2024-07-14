@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { addUser } from "../api/POST";
 import { authUser } from "../api/auth/user";
 import useSocket from "../hooks/useSocket";
-import { User } from "../types/user";
+import { THEME, User } from "../types/user";
 
 interface UserContext {
     isAuth: boolean;
@@ -31,7 +31,7 @@ const UserDataProvider = ({ children }: { children: ReactNode }) => {
     const [isAuth, setIsAuth] = useState<boolean>(false);
     const [userInfo, setUserInfo] = useState<User | null>(null);
     const [friendList, setFriendList] = useState<User[] | null>(null);
-    const [userChats, setUserChats] = useState(null);
+    // const [userChats, setUserChats] = useState(null);
 
     const navigate = useNavigate();
 
@@ -51,10 +51,13 @@ const UserDataProvider = ({ children }: { children: ReactNode }) => {
                 setFriendList(res.data?.friendList);
                 // navigate("/dashboard", { replace: true });
             } else {
-                const userData = {
+                const userData: User = {
                     name: user?.username || user?.fullName,
                     email: user?.emailAddresses[0].emailAddress,
-                    image: user?.imageUrl,
+                    Profile: {
+                        image: user?.imageUrl,
+                        theme: THEME.DARK,
+                    },
                 };
                 const result = await addUser(userData);
                 if (result.success) {

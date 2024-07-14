@@ -1,25 +1,24 @@
 export interface User {
-    id: string;
-    name: string;
-    email: string;
-    createdAt: Date;
-    updatedAt: Date;
+    id?: string;
+    name: string | null | undefined;
+    email: string | undefined;
+    createdAt?: Date;
+    updatedAt?: Date;
 
-    Profile?: Profile;
+    Profile: Profile;
 }
 
 export interface Profile {
-    id: string;
-    about: string;
-    image: string;
+    id?: string;
+    about?: string;
+    image: string | undefined;
     theme: THEME;
 }
 export interface CurrentChatUser extends User {
     isOnline: boolean | undefined;
 }
 
-
-enum THEME {
+export enum THEME {
     LIGHT,
     DARK,
     SYSTEM,

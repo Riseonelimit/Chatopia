@@ -22,8 +22,7 @@ const ChatBox = () => {
             inline: "nearest",
         });
     }, [messageArray]);
-
-    console.log({ currentChatInfo });
+    
 
     if (!currentChatInfo || currentChatInfo == null) {
         return (
@@ -57,14 +56,14 @@ const ChatBox = () => {
                               return (
                                   <SenderChat
                                       key={index}
-                                      message={messageInfo.message}
+                                      message={messageInfo.content}
                                   />
                               );
                           }
                           return (
                               <ReceiverChat
                                   key={index}
-                                  message={messageInfo.message}
+                                  message={messageInfo.content}
                               />
                           );
                       })
