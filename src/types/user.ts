@@ -1,5 +1,5 @@
 export interface User {
-    id?: string;
+    id: string;
     name: string | null | undefined;
     email: string | undefined;
     createdAt?: Date;
@@ -14,9 +14,15 @@ export interface Profile {
     image: string | undefined;
     theme: THEME;
 }
+export type UserSearchList = Pick<User, "name" | "id"> & {
+    Profile: Pick<Profile, "image">;
+};
+
 export interface CurrentChatUser extends User {
     isOnline: boolean | undefined;
 }
+
+
 
 export enum THEME {
     LIGHT,

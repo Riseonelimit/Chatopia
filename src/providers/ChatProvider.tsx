@@ -1,6 +1,6 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
 import useSocket from "../hooks/useSocket";
-import { CurrentChatUser } from "../types/user";
+import { CurrentChatUser, UserSearchList } from "../types/user";
 
 interface ChatContext {
     onlineUsers: string[] | null;
@@ -8,35 +8,56 @@ interface ChatContext {
     setCurrentChatInfo: React.Dispatch<
         React.SetStateAction<CurrentChatUser | null>
     >;
+    findUserList: UserSearchList[] | null;
+    setFindUserList: React.Dispatch<
+        React.SetStateAction<UserSearchList[] | null>
+    >;
 }
 
 export const ChatContext = createContext<ChatContext>({
     onlineUsers: null,
     setCurrentChatInfo: () => {},
+    setFindUserList: () => {},
     currentChatInfo: null,
+    findUserList: null,
 });
 
 const ChatProvider = ({ children }: { children: ReactNode }) => {
     const { socket } = useSocket();
 
     const [onlineUsers, setOnlineUsers] = useState([]);
+    const [findUserList, setFindUserList] = useState<UserSearchList[] | null>(
+        []
+    );
     const [currentChatInfo, setCurrentChatInfo] =
         useState<CurrentChatUser | null>(null);
 
     useEffect(() => {
-        socket?.on("online-users", (args) => {
-            console.log(args);
+        if (!socket) return;
+        socket.on("online-users", (args) => {
             setOnlineUsers(args);
         });
 
+        socket.on(`chat:find-user-result`, (result: UserSearchList[]) => {
+            console.log(result);
+
+            setFindUserList(result);
+        });
         return () => {
             socket?.off("online-users", () => {});
+            socket?.off(`chat:find-user-result`, () => {});
         };
-    }, [socket, onlineUsers, setOnlineUsers]);
+    }, [socket]);
 
     return (
         <ChatContext.Provider
-            value={{ onlineUsers, currentChatInfo, setCurrentChatInfo }}
+            value={{
+                onlineUsers,
+                currentChatInfo,
+                setCurrentChatInfo,
+                findUserList,
+                setFindUserList,
+            }}
         >
             {children}
         </ChatContext.Provider>
