@@ -43,6 +43,12 @@ export default {
                     },
                     "100%": { opacity: 1 },
                 },
+                loading: {
+                    "0%": {
+                        transform: "rotate(0deg)",
+                    },
+                    "100%": { transform: "rotate(360deg)" },
+                },
             },
             animation: {
                 "pulse-slow": " wave_zoom 18s infinite ease-in-out",
@@ -50,6 +56,7 @@ export default {
                 "send-chat": " sender_chat_add 0.2s  ",
                 "fade-top": " fade_top 0.2s  ",
                 "receive-chat": " receive_chat 0.2s  ",
+                loading: " loading 0.8s infinite ease-in-out ",
             },
         },
     },

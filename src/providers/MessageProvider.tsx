@@ -27,15 +27,20 @@ const MessageProvider = ({ children }: { children: ReactNode }) => {
         socket?.on(
             `chat:receive-message:${userInfo?.id}`,
             (message: ChatMessage) => {
-                console.log({ content: message.content });
                 setMessageArray([...messageArray, message]);
             }
         );
 
+        socket?.on(`chat:get-all-messages`, (messages: ChatMessage[]) => {
+            console.log(messages);
+
+            setMessageArray([...messages]);
+        });
+
         return () => {
             socket?.off(`chat:receive-message:${localStorage.getItem("uuid")}`);
         };
-    }, [socket, messageArray, setMessageArray, userInfo]);
+    }, [socket, messageArray, userInfo]);
 
     return (
         <MessageContext.Provider

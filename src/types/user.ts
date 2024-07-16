@@ -22,7 +22,18 @@ export interface CurrentChatUser extends User {
     isOnline: boolean | undefined;
 }
 
-
+export interface Chat {
+    id: string;
+    isGroup: boolean;
+    groupName: string;
+    chatIcon: string;
+    lastMessageId?: string;
+    createdAt?: Date;
+    updatedAt?: Date;
+    participants: Omit<User[], "createdAt" | "updatedAt" | "Profile"> & {
+        Profile: Pick<Profile, "image">;
+    };
+}
 
 export enum THEME {
     LIGHT,
