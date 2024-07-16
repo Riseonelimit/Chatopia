@@ -1,13 +1,11 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
 import useSocket from "../hooks/useSocket";
-import { CurrentChatUser, UserSearchList } from "../types/user";
+import { Chat, UserSearchList } from "../types/user";
 
 interface ChatContext {
     onlineUsers: string[] | null;
-    currentChatInfo: CurrentChatUser | null;
-    setCurrentChatInfo: React.Dispatch<
-        React.SetStateAction<CurrentChatUser | null>
-    >;
+    currentChatInfo: Chat | null;
+    setCurrentChatInfo: React.Dispatch<React.SetStateAction<Chat | null>>;
     findUserList: UserSearchList[] | null;
     setFindUserList: React.Dispatch<
         React.SetStateAction<UserSearchList[] | null>
@@ -29,8 +27,7 @@ const ChatProvider = ({ children }: { children: ReactNode }) => {
     const [findUserList, setFindUserList] = useState<UserSearchList[] | null>(
         []
     );
-    const [currentChatInfo, setCurrentChatInfo] =
-        useState<CurrentChatUser | null>(null);
+    const [currentChatInfo, setCurrentChatInfo] = useState<Chat | null>(null);
 
     useEffect(() => {
         if (!socket) return;
@@ -39,8 +36,6 @@ const ChatProvider = ({ children }: { children: ReactNode }) => {
         });
 
         socket.on(`chat:find-user-result`, (result: UserSearchList[]) => {
-            console.log(result);
-
             setFindUserList(result);
         });
         return () => {

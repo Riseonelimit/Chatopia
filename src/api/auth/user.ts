@@ -1,15 +1,15 @@
 import { ResultData } from "../../providers/UserDataProvider";
 import { axiosInstance } from "../axios";
 
-export interface ApiResult {
+export interface ApiResult<T> {
     success: boolean;
-    data: ResultData | null;
+    data: T;
     message?: string;
 }
 
 export const authUser = async (
     email: string | undefined
-): Promise<ApiResult> => {
+): Promise<ApiResult<ResultData | null>> => {
     try {
         const { data, status } = await axiosInstance.get("/auth", {
             params: {

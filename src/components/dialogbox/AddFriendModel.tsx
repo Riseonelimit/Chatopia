@@ -18,7 +18,10 @@ const AddFriendModel = () => {
         console.log("find friend");
         console.log(searchName);
 
-        socket?.emit(`chat:find-user:${userInfo?.id}`, searchName);
+        socket?.emit(`chat:find-user:${userInfo?.id}`, {
+            id: userInfo?.id,
+            searchName,
+        });
     };
 
     return (
@@ -50,13 +53,16 @@ const AddFriendModel = () => {
                 >
                     <X
                         absoluteStrokeWidth
-                        className=" text-red-400 hover:text-red-700  duration-150"
+                        className=" text-red-400   duration-150"
                     />
                 </div>
             </div>
             <div className=" px-2 py-2 flexbox flex-col justify-start gap-2 bg-background/50 h-[40rem] w-full rounded-2xl overflow-y-auto no-scrollbar">
                 {findUserList?.map((userDetails) => (
-                    <FindUserItem userDetails={userDetails} />
+                    <FindUserItem
+                        key={userDetails.id}
+                        userDetails={userDetails}
+                    />
                 ))}
             </div>
         </div>

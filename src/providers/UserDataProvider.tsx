@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { addUser } from "../api/POST";
 import { authUser } from "../api/auth/user";
 import useSocket from "../hooks/useSocket";
-import { THEME, User } from "../types/user";
+import { Chat, THEME, User } from "../types/user";
 
 interface UserContext {
     isAuth: boolean;
@@ -12,6 +12,9 @@ interface UserContext {
     userInfo: User | null;
     setUserInfo: React.Dispatch<React.SetStateAction<User | null>>;
     friendList: User[] | null;
+    setFriendList: React.Dispatch<React.SetStateAction<User[] | null>>;
+    userChats: Chat[] | null;
+    setUserChats: React.Dispatch<React.SetStateAction<Chat[] | null>>;
 }
 
 export const UserDataContext = createContext<UserContext>({
@@ -20,18 +23,21 @@ export const UserDataContext = createContext<UserContext>({
     userInfo: null,
     setUserInfo: () => {},
     friendList: null,
+    setFriendList: () => {},
+    userChats: null,
+    setUserChats: () => {},
 });
 
 export interface ResultData {
     userInfo: User;
-    friendList: User[];
+    userChats: Chat[];
 }
 
 const UserDataProvider = ({ children }: { children: ReactNode }) => {
     const [isAuth, setIsAuth] = useState<boolean>(false);
     const [userInfo, setUserInfo] = useState<User | null>(null);
     const [friendList, setFriendList] = useState<User[] | null>(null);
-    // const [userChats, setUserChats] = useState(null);
+    const [userChats, setUserChats] = useState<Chat[] | null>(null);
 
     const navigate = useNavigate();
 
@@ -48,10 +54,10 @@ const UserDataProvider = ({ children }: { children: ReactNode }) => {
             if (res.success && res.data) {
                 setIsAuth(true);
                 setUserInfo(res.data?.userInfo);
-                setFriendList(res.data?.friendList);
+                setUserChats(res.data?.userChats);
                 // navigate("/dashboard", { replace: true });
             } else {
-                const userData: User = {
+                const userData: Omit<User, "id"> = {
                     name: user?.username || user?.fullName,
                     email: user?.emailAddresses[0].emailAddress,
                     Profile: {
@@ -74,23 +80,21 @@ const UserDataProvider = ({ children }: { children: ReactNode }) => {
             socket?.disconnect();
             setIsAuth(false);
         }
-    }, [
-        user,
-        navigate,
-        isSignedIn,
-        isAuth,
-        setIsAuth,
-        userInfo,
-        setUserInfo,
-        friendList,
-        setFriendList,
-        socket,
-    ]);
+    }, [user, navigate, isAuth, isSignedIn, socket]);
 
     useEffect(() => {}, [isSignedIn, user]);
     return (
         <UserDataContext.Provider
-            value={{ isAuth, setIsAuth, userInfo, setUserInfo, friendList }}
+            value={{
+                isAuth,
+                setIsAuth,
+                userInfo,
+                setUserInfo,
+                friendList,
+                setFriendList,
+                userChats,
+                setUserChats,
+            }}
         >
             {children}
         </UserDataContext.Provider>

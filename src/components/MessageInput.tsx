@@ -5,6 +5,7 @@ import useUserData from "../hooks/useUserData";
 import { MessageContext } from "../providers/MessageProvider";
 import useChat from "../hooks/useChat";
 import { ChatMessage, MessageType } from "../types/chat";
+import { filterCurrentUser } from "../utils/helper";
 
 const MessageInput = () => {
     const { user } = useUser();
@@ -15,6 +16,10 @@ const MessageInput = () => {
 
     const { userInfo } = useUserData();
     const { sendMessage } = useSocket();
+
+    if (!currentChatInfo) return null;
+    const chatUser = filterCurrentUser(currentChatInfo.participants, userInfo);
+
     return (
         <div className="p-3  w-full h-[10%] bg-zinc-800/70 duration-150  flexbox rounded-2xl">
             <textarea
@@ -38,10 +43,10 @@ const MessageInput = () => {
                     const message: ChatMessage = {
                         chatId: currentChatInfo?.id || "",
                         senderId: userInfo?.id || "",
-                        receiverId: currentChatInfo?.id || "",
+                        receiverId: chatUser.id,
                         content: chatMessage,
-                        type: MessageType.IMAGE,
-                        isGroup: false,
+                        type: MessageType.TEXT,
+                        isGroup: currentChatInfo.isGroup,
                         userName: user?.fullName || user?.username || "",
                     };
                     if (sendMessage) sendMessage(message.senderId, message);
