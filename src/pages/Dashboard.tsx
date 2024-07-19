@@ -1,12 +1,15 @@
-import bg from "../assets/dashboard_blur.svg";
-import grid from "../assets/leaves.svg";
 import ChatContainer from "../components/chat/ChatContainer";
 import ChatNavbar from "../components/chat/ChatNavbar";
 import { DialogBox } from "../components/dialogbox/DialogBox";
+import useUserData from "../hooks/useUserData";
 
 const Dashboard = () => {
+    const { theme } = useUserData();
+
     return (
-        <section className=" p-3 w-full h-screen bg-background text-white relative flex flex-col items-center justify-start gap-8 overflow-hidden">
+        <section
+            className={`p-3 w-full h-screen bg-background text-white relative flex flex-col items-center justify-start gap-8 overflow-hidden ease-in-out duration-1000 ${theme}`}
+        >
             {/* NAVBAR */}
             <ChatNavbar />
 
@@ -14,16 +17,10 @@ const Dashboard = () => {
             <ChatContainer />
 
             <img
-                src={bg}
+                src={`/images/${theme}.svg`}
                 alt=""
                 draggable={false}
-                className="absolute z-10 select-none top-0 object-cover w-full h-full"
-            />
-            <img
-                src={grid}
-                alt=""
-                draggable={false}
-                className="absolute z-10 select-none top-0 object-cover w-full h-full opacity-80 animate-pulse-slow duration-1000 "
+                className="absolute z-20 select-none top-0 object-cover w-full h-full opacity-80 animate-pulse-slow  duration-1000 "
             />
 
             <DialogBox />

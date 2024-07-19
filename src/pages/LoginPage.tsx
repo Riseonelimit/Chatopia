@@ -1,5 +1,4 @@
 import { SignedOut, SignIn, useUser } from "@clerk/clerk-react";
-import { Replace } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {

@@ -1,10 +1,10 @@
 import { ResultData } from "../providers/UserDataProvider";
-import { Chat, User, UserSearchList } from "../types/user";
+import { Chat, InsertUser, User, UserSearchList } from "../types/user";
 import { ApiResult } from "./auth/user";
 import { axiosInstance } from "./axios";
 
 export const addUser = async (
-    userData: Omit<User, "id">
+    userData: InsertUser
 ): Promise<ApiResult<ResultData | null>> => {
     try {
         const { data, status } = await axiosInstance.post(

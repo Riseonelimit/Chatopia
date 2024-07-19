@@ -45,29 +45,28 @@ const ChatBox = () => {
 
             {/* MESSAGE DIV */}
             <div className=" w-full h-[90%] flexbox flex-col  justify-start gap-2 rounded-2xl overflow-y-auto no-scrollbar">
-                <ReceiverChat message="hey bro" />
-                <ReceiverChat message="helllo broooo" />
-                <SenderChat message="whatsppp brooo" />
-                <SenderChat message="whatsppp brooo" />
-
-                {messageArray?.length > 0
-                    ? messageArray.map((messageInfo, index) => {
-                          if (messageInfo.senderId == userInfo?.id) {
-                              return (
-                                  <SenderChat
-                                      key={index}
-                                      message={messageInfo.content}
-                                  />
-                              );
-                          }
-                          return (
-                              <ReceiverChat
-                                  key={index}
-                                  message={messageInfo.content}
-                              />
-                          );
-                      })
-                    : null}
+                {messageArray?.length > 0 ? (
+                    messageArray.map((messageData) => {
+                        if (messageData.senderId == userInfo?.id) {
+                            return (
+                                <SenderChat
+                                    key={messageData.id}
+                                    messageData={messageData}
+                                />
+                            );
+                        }
+                        return (
+                            <ReceiverChat
+                                key={messageData.id}
+                                messageData={messageData}
+                            />
+                        );
+                    })
+                ) : (
+                    <h2 className="text-5xl font-semibold justify-self-center self-center text-secondary/30">
+                        Start a conversation 🐰
+                    </h2>
+                )}
                 <div ref={chatRef}></div>
             </div>
             <MessageInput />

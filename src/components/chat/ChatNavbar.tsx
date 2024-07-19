@@ -1,24 +1,33 @@
-import { UserButton, useClerk } from "@clerk/clerk-react";
-import { Bell, LogOut, UserPlus } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { UserButton } from "@clerk/clerk-react";
+import { Bell, Paintbrush, UserPlus, X } from "lucide-react";
+import { useState } from "react";
 import { useDialogBox } from "../../hooks/useDialogBox";
 import useSocket from "../../hooks/useSocket";
 import useUserData from "../../hooks/useUserData";
 import { BoxType } from "../../providers/DialogBoxProvider";
+import { THEME } from "../../types/user";
 
 const ChatNavbar = () => {
-    const { isConnected } = useSocket();
-    const { signOut } = useClerk();
-    const navigate = useNavigate();
-
-    const { socket } = useSocket();
-
-    const { setIsAuth } = useUserData();
+    const { isConnected, socket } = useSocket();
     const { setIsOpen, setBoxType } = useDialogBox();
 
+    const [themeBox, setThemeBox] = useState<boolean>(false);
+    const { setTheme, setUserInfo, userInfo } = useUserData();
+
+    const handleThemeChange = (theme: THEME) => {
+        socket?.emit("user:update-theme", { theme, userId: userInfo?.id });
+        setUserInfo({
+            ...userInfo!,
+            Profile: { ...userInfo!.Profile, theme: theme },
+        });
+        setTheme(theme);
+        localStorage.setItem("theme", theme);
+    };
+
+    const themeEntries = Object.keys(THEME);
     return (
-        <div className=" z-50 p-5 w-3/4 bg-primary/10 backdrop-blur-md flexbox gap-3 rounded-3xl border-[2px] border-primary/70">
-            <h2 className=" mr-auto text-3xl font-bold bg-gradient-to-r from-purple-300 to-purple-500 text-transparent bg-clip-text">
+        <div className=" z-[70] p-5 w-3/4 bg-primary/10 backdrop-blur-md flexbox gap-3  rounded-3xl border-[2px] border-primary/70 animate-fade-in">
+            <h2 className=" mr-auto text-3xl font-bold bg-gradient-to-r from-primary/60 to-primary text-transparent bg-clip-text">
                 Chatopia
             </h2>
 
@@ -34,7 +43,7 @@ const ChatNavbar = () => {
             <div className="p-2 rounded-xl border-[1px] border-primary hover:cursor-pointer">
                 <Bell
                     absoluteStrokeWidth
-                    className=" text-purple-300 hover:text-white duration-150"
+                    className=" text-secondary/70 hover:text-white duration-150"
                 />
             </div>
             <div className="p-2 rounded-xl border-[1px] border-primary hover:cursor-pointer">
@@ -44,25 +53,41 @@ const ChatNavbar = () => {
                         setBoxType(BoxType.ADD_FRIEND);
                     }}
                     absoluteStrokeWidth
-                    className=" text-purple-300 hover:text-white duration-150"
+                    className=" text-secondary/70 hover:text-white duration-150"
                 />
             </div>
-
-            {/* <button
-                onClick={() => {
-                    socket?.disconnect();
-                    setIsAuth(false);
-                    signOut(() => {
-                        navigate("/", { replace: true });
-                    });
-                }}
-                className="p-2 rounded-xl border-[1px] border-primary group hover:border-red-400 hover:cursor-pointer duration-150 "
-            >
-                <LogOut
-                    absoluteStrokeWidth
-                    className=" text-purple-300 group-hover:text-red-400 duration-175 duration-150"
-                />
-            </button> */}
+            <div className=" relative flexbox ">
+                <div
+                    onClick={() => setThemeBox(!themeBox)}
+                    className={`p-2 rounded-xl border-[1px] hover:cursor-pointer ${
+                        themeBox ? "border-red-500" : "border-primary"
+                    }`}
+                >
+                    {themeBox ? (
+                        <X absoluteStrokeWidth className=" text-red-500" />
+                    ) : (
+                        <Paintbrush
+                            absoluteStrokeWidth
+                            className=" text-secondary/70 hover:text-white duration-150"
+                        />
+                    )}
+                </div>
+                {themeBox ? (
+                    <div className=" p-2 absolute z-[99] -bottom-[150%] flexbox gap-3 rounded-2xl border-primary border-[1px] bg-background/60 animate-fade-in ">
+                        {themeEntries.map((theme, idx) => (
+                            <button
+                                key={idx}
+                                onClick={() =>
+                                    handleThemeChange(theme as THEME)
+                                }
+                                className=" px-3 py-2 w-full text-sm font-semibold text-center rounded-xl "
+                            >
+                                {theme}
+                            </button>
+                        ))}
+                    </div>
+                ) : null}
+            </div>
 
             <div className="p-2 rounded-xl border-[1px] border-primary hover:cursor-pointer">
                 <UserButton afterSignOutUrl="/" userProfileMode="modal" />

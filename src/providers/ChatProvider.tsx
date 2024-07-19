@@ -10,20 +10,25 @@ interface ChatContext {
     setFindUserList: React.Dispatch<
         React.SetStateAction<UserSearchList[] | null>
     >;
+    chatLoading: boolean;
+    setChatLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const ChatContext = createContext<ChatContext>({
     onlineUsers: null,
     setCurrentChatInfo: () => {},
-    setFindUserList: () => {},
     currentChatInfo: null,
+    setFindUserList: () => {},
     findUserList: null,
+    setChatLoading: () => {},
+    chatLoading: false,
 });
 
 const ChatProvider = ({ children }: { children: ReactNode }) => {
     const { socket } = useSocket();
 
     const [onlineUsers, setOnlineUsers] = useState([]);
+    const [chatLoading, setChatLoading] = useState<boolean>(false);
     const [findUserList, setFindUserList] = useState<UserSearchList[] | null>(
         []
     );
@@ -37,6 +42,7 @@ const ChatProvider = ({ children }: { children: ReactNode }) => {
 
         socket.on(`chat:find-user-result`, (result: UserSearchList[]) => {
             setFindUserList(result);
+            setChatLoading(false);
         });
         return () => {
             socket?.off("online-users", () => {});
@@ -52,6 +58,8 @@ const ChatProvider = ({ children }: { children: ReactNode }) => {
                 setCurrentChatInfo,
                 findUserList,
                 setFindUserList,
+                chatLoading,
+                setChatLoading,
             }}
         >
             {children}

@@ -12,6 +12,7 @@ import DialogBoxProvider from "./providers/DialogBoxProvider";
 function App() {
     const navigate = useNavigate();
     const { pathname } = useLocation();
+
     return (
         <ClerkProvider
             navigate={navigate}

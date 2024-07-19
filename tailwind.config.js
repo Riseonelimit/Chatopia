@@ -4,19 +4,20 @@ export default {
     theme: {
         extend: {
             colors: {
-                background: "#191825",
-                primary: "#810CA8",
-                secondary: "#E5B8F4",
+                background: "rgb(var(--color-background) / <alpha-value>)",
+                primary: "rgb(var(--color-primary) / <alpha-value>)",
+                secondary: "rgb(var(--color-secondary) / <alpha-value>)",
             },
             keyframes: {
                 wave_zoom: {
-                    "0%": { opacity: 0.45 },
+                    "0%": { opacity: 0.45, transform: "scale(1.1)" },
+
                     "50%": {
                         opacity: 1,
                         transform: "scale(1.1)",
-                        transform: "rotate(4deg)",
+                        transform: "rotate(1deg)",
                     },
-                    "100%": { opacity: 0.45 },
+                    "100%": { opacity: 0.45, transform: "scale(1.1)" },
                 },
                 fade_in: {
                     "0%": { opacity: 0 },
@@ -54,9 +55,10 @@ export default {
                 "pulse-slow": " wave_zoom 18s infinite ease-in-out",
                 "fade-in": " fade_in 0.3s  ease-in",
                 "send-chat": " sender_chat_add 0.2s  ",
-                "fade-top": " fade_top 0.2s  ",
+                "fade-top": " fade_top 0.2s ease-in",
+                "fade-top-delayed": " fade_top 0.6s ease-in-out",
                 "receive-chat": " receive_chat 0.2s  ",
-                loading: " loading 0.8s infinite ease-in-out ",
+                loading: " loading 1s infinite ease-in-out ",
             },
         },
     },

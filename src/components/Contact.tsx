@@ -4,6 +4,7 @@ import useUserData from "../hooks/useUserData";
 import { Chat } from "../types/user";
 import { filterCurrentUser } from "../utils/helper";
 import useSocket from "../hooks/useSocket";
+import useMessage from "../hooks/useMessage";
 
 const Contact = ({
     chatInfo,
@@ -14,6 +15,7 @@ const Contact = ({
 }) => {
     const { setCurrentChatInfo, currentChatInfo } = useChat();
     const { userInfo } = useUserData();
+    const { lastMessage } = useMessage();
     const { socket } = useSocket();
 
     const setCurrentChat = () => {
@@ -37,7 +39,7 @@ const Contact = ({
     return (
         <div
             onClick={setCurrentChat}
-            className={`p-2 w-full h-[5rem] group relative grid grid-cols-5 gap-2 bg-primary/20 rounded-2xl hover:bg-primary border-[1px] border-primary duration-150 hover:scale-[1.03]`}
+            className={`p-2 w-full h-[5rem] group relative grid grid-cols-5 gap-2 bg-primary/20 rounded-2xl hover:bg-primary border-[1px] border-primary duration-150 hover:scale-[1.03] animate-fade-top-delayed delay-150 `}
         >
             <div className="bg-red-300 col-span-1 w-full  flexbox rounded-xl overflow-hidden">
                 <img
@@ -49,8 +51,9 @@ const Contact = ({
             <div className=" col-span-4 w-full flexbox flex-col items-start  ">
                 <h2 className=" font-semibold">{chatUser.name}</h2>
                 <p className=" text-xs line-clamp-1 ">
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                    officiis exercitationem, mollitia sapiente dolorem.
+                    {lastMessage
+                        ? lastMessage.content
+                        : "Lorem ipsum dolor, sit amet consectetur adipisicing elit."}
                 </p>
             </div>
 

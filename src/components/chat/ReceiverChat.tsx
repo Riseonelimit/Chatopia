@@ -1,7 +1,19 @@
-const ReceiverChat = ({ message }: { message: string }) => {
+import { ChatMessage } from "../../types/chat";
+
+const ReceiverChat = ({ messageData }: { messageData: ChatMessage }) => {
+    console.log(messageData);
+
     return (
-        <div className="px-4 py-3 mr-auto animate-receive-chat bg-gray-800/70 shadow-md max-w-[60%] flexbox rounded-r-2xl rounded-tl-2xl">
-            <span className=" ">{message}</span>
+        <div className="flexbox flex-col w-full items-start">
+            <div className="px-4 py-3 mr-auto relative animate-receive-chat bg-background/70 shadow-md max-w-[60%] flexbox rounded-r-2xl rounded-tl-2xl">
+                <span className=" ">{messageData.content}</span>
+            </div>
+            <p className=" ml-1 text-xs">
+                {new Date(messageData.createdAt).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                })}
+            </p>{" "}
         </div>
     );
 };

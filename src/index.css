@@ -2,48 +2,73 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    :root {
+        --color-background: 25 24 37;
+        --color-primary: 129 12 168;
+        --color-secondary: 230 184 245;
+    }
+    .EMERALD {
+        --color-background: 25 43 40;
+        --color-primary:6 184 154;
+        --color-secondary: 145 221 207;
+    }
+    .PINK {
+        --color-background: 77 42 64;
+        --color-primary: 240 19 157;
+        --color-secondary: 241 158 210;
+    }
+    .MOCHA {
+        --color-background: 48 35 27;
+        --color-primary: 230 103 21;
+        --color-secondary: 255 209 179;
+    }
+    .DARK{
+      --color-background: 27 28 28;
+      --color-primary: 102 102 102;
+      --color-secondary: 95 95 97;
+    }
+}
+
 .dialog-enter {
     opacity: 0;
-  }
+}
 .dialog-enter-active {
     opacity: 1;
     transform: translateX(0);
     transition: opacity 300ms, transform 300ms;
-  }
-  .dialog-enter-done {
+}
+.dialog-enter-done {
     opacity: 1;
-  }
+}
 .dialog-exit {
     opacity: 1;
-  }
+}
 .dialog-exit-active {
     opacity: 0;
     transition: opacity 300ms, transform 300ms;
-  }
-  .dialog-exit-done {
+}
+.dialog-exit-done {
     opacity: 0;
     transition: opacity 300ms, transform 300ms;
-  }
-
-@layer components{
-    .primary-btn{
-        @apply px-4 py-2 rounded-2xl bg-primary/10 border-primary border-[1px] hover:border-purple-900  hover:bg-primary/40 backdrop-blur-md text-white font-[400] duration-300
+}
+@layer base {
+    h1 {
+        @apply text-7xl leading-[1.5em];
     }
-    .secondary-btn{
-        @apply px-4 py-2 rounded-2xl border-white/40  hover:bg-white  border-[1px] hover:border-white/40  hover:bg-white/10 backdrop-blur-md text-white font-[400] duration-300
+    .flexbox {
+        @apply flex items-center justify-center;
+    }
+}
+@layer components {
+    .primary-btn {
+        @apply px-4 py-2 rounded-2xl bg-primary/10 border-primary border-[1px] hover:border-purple-900  hover:bg-primary/40 backdrop-blur-md text-white font-[400] duration-300;
+    }
+    .secondary-btn {
+        @apply px-4 py-2 rounded-2xl border-white/40  hover:bg-white  border-[1px] hover:border-white/40  hover:bg-white/10 backdrop-blur-md text-white font-[400] duration-300;
     }
     .no-scrollbar {
         -ms-overflow-style: none; /* IE and Edge */
         scrollbar-width: none; /* Firefox */
     }
-}
-
-@layer base{
-    h1{
-        @apply text-7xl leading-[1.5em]
-    }
-    .flexbox{
-        @apply flex items-center justify-center
-    }
-   
 }

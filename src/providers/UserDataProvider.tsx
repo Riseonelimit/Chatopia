@@ -4,28 +4,32 @@ import { useNavigate } from "react-router-dom";
 import { addUser } from "../api/POST";
 import { authUser } from "../api/auth/user";
 import useSocket from "../hooks/useSocket";
-import { Chat, THEME, User } from "../types/user";
+import { Chat, InsertUser, THEME, User } from "../types/user";
 
 interface UserContext {
     isAuth: boolean;
-    setIsAuth: React.Dispatch<React.SetStateAction<boolean>>;
     userInfo: User | null;
-    setUserInfo: React.Dispatch<React.SetStateAction<User | null>>;
     friendList: User[] | null;
-    setFriendList: React.Dispatch<React.SetStateAction<User[] | null>>;
     userChats: Chat[] | null;
+    theme: THEME;
+    setIsAuth: React.Dispatch<React.SetStateAction<boolean>>;
+    setUserInfo: React.Dispatch<React.SetStateAction<User | null>>;
+    setFriendList: React.Dispatch<React.SetStateAction<User[] | null>>;
     setUserChats: React.Dispatch<React.SetStateAction<Chat[] | null>>;
+    setTheme: React.Dispatch<React.SetStateAction<THEME>>;
 }
 
 export const UserDataContext = createContext<UserContext>({
     isAuth: false,
-    setIsAuth: () => {},
+    theme: THEME.DEFAULT,
     userInfo: null,
-    setUserInfo: () => {},
     friendList: null,
-    setFriendList: () => {},
     userChats: null,
+    setIsAuth: () => {},
+    setUserInfo: () => {},
+    setFriendList: () => {},
     setUserChats: () => {},
+    setTheme: () => {},
 });
 
 export interface ResultData {
@@ -34,6 +38,9 @@ export interface ResultData {
 }
 
 const UserDataProvider = ({ children }: { children: ReactNode }) => {
+    const cacheTheme = localStorage.getItem("theme") as THEME;
+
+    const [theme, setTheme] = useState<THEME>(cacheTheme || THEME.DEFAULT);
     const [isAuth, setIsAuth] = useState<boolean>(false);
     const [userInfo, setUserInfo] = useState<User | null>(null);
     const [friendList, setFriendList] = useState<User[] | null>(null);
@@ -47,7 +54,7 @@ const UserDataProvider = ({ children }: { children: ReactNode }) => {
 
     useEffect(() => {
         const checkIfUserExist = async () => {
-            console.log("auth");
+            if (!user) return;
 
             const res = await authUser(user?.emailAddresses[0].emailAddress);
 
@@ -55,14 +62,15 @@ const UserDataProvider = ({ children }: { children: ReactNode }) => {
                 setIsAuth(true);
                 setUserInfo(res.data?.userInfo);
                 setUserChats(res.data?.userChats);
+                setTheme(res.data?.userInfo.Profile.theme);
                 // navigate("/dashboard", { replace: true });
             } else {
-                const userData: Omit<User, "id"> = {
+                const userData: InsertUser = {
                     name: user?.username || user?.fullName,
                     email: user?.emailAddresses[0].emailAddress,
                     Profile: {
                         image: user?.imageUrl,
-                        theme: THEME.DARK,
+                        theme: THEME.DEFAULT,
                     },
                 };
                 const result = await addUser(userData);
@@ -80,7 +88,7 @@ const UserDataProvider = ({ children }: { children: ReactNode }) => {
             socket?.disconnect();
             setIsAuth(false);
         }
-    }, [user, navigate, isAuth, isSignedIn, socket]);
+    }, [user, navigate, isAuth, isSignedIn, socket, cacheTheme]);
 
     useEffect(() => {}, [isSignedIn, user]);
     return (
@@ -94,6 +102,8 @@ const UserDataProvider = ({ children }: { children: ReactNode }) => {
                 setFriendList,
                 userChats,
                 setUserChats,
+                theme,
+                setTheme,
             }}
         >
             {children}

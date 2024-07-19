@@ -32,8 +32,6 @@ const MessageProvider = ({ children }: { children: ReactNode }) => {
         );
 
         socket?.on(`chat:get-all-messages`, (messages: ChatMessage[]) => {
-            console.log(messages);
-
             setMessageArray([...messages]);
         });
 

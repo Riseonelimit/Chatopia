@@ -9,12 +9,16 @@ export interface User {
 }
 
 export interface Profile {
-    id?: string;
+    id: string;
     about?: string;
-    image: string | undefined;
+    image?: string | undefined;
     theme: THEME;
 }
-export type UserSearchList = Pick<User, "name" | "id"> & {
+export type InsertUser = Omit<User, "id" | "Profile"> & {
+    Profile: Omit<Profile, "id">;
+};
+
+export type UserSearchList = Pick<User, "name" | "id" | "Profile"> & {
     Profile: Pick<Profile, "image">;
 };
 
@@ -36,7 +40,9 @@ export interface Chat {
 }
 
 export enum THEME {
-    LIGHT,
-    DARK,
-    SYSTEM,
+    DEFAULT = "DEFAULT",
+    EMERALD = "EMERALD",
+    PINK = "PINK",
+    MOCHA = "MOCHA",
+    DARK = "DARK",
 }

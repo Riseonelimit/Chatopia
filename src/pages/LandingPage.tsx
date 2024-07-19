@@ -6,19 +6,18 @@ import drink from "../assets/drink.svg";
 import cheeky from "../assets/emojie_cheeky.svg";
 import grid from "../assets/grid.svg";
 import love from "../assets/love.svg";
-import useUserData from "../hooks/useUserData";
 import { HOMEPAGE_URL } from "../utils/const";
 
 const LandingPage = () => {
     const { openSignIn, openSignUp } = useClerk();
     const { isSignedIn } = useUser();
 
-    const { isAuth } = useUserData();
-
     const navigate = useNavigate();
 
     return (
-        <section className=" w-full h-screen overflow-y-hidden bg-background relative flex flex-col items-center justify-center">
+        <section
+            className={` w-full h-screen overflow-y-hidden bg-background relative flex flex-col items-center justify-center duration-300 `}
+        >
             <div className="z-[100] flexbox flex-col gap-10 w-[40%] text-center">
                 <h1 className=" font-bold bg-gradient-to-r from-purple-200 to-stone-400 text-transparent bg-clip-text">
                     Chatopia
@@ -32,7 +31,6 @@ const LandingPage = () => {
                     </span>{" "}
                     in a new and exciting way - join us today!
                 </p>
-                {isAuth ? <h1>True</h1> : <h1>False</h1>}
                 <div className="flexbox gap-3">
                     <button
                         onClick={() => {

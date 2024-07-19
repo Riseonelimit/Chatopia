@@ -1,4 +1,4 @@
-import { Search, X } from "lucide-react";
+import { Loader, Search, X } from "lucide-react";
 import { useState } from "react";
 import useChat from "../../hooks/useChat";
 import { useDialogBox } from "../../hooks/useDialogBox";
@@ -12,12 +12,10 @@ const AddFriendModel = () => {
 
     const { socket } = useSocket();
     const { userInfo } = useUserData();
-    const { findUserList } = useChat();
+    const { findUserList, chatLoading, setChatLoading } = useChat();
 
     const searchFriend = () => {
-        console.log("find friend");
-        console.log(searchName);
-
+        setChatLoading(true);
         socket?.emit(`chat:find-user:${userInfo?.id}`, {
             id: userInfo?.id,
             searchName,
@@ -58,12 +56,18 @@ const AddFriendModel = () => {
                 </div>
             </div>
             <div className=" px-2 py-2 flexbox flex-col justify-start gap-2 bg-background/50 h-[40rem] w-full rounded-2xl overflow-y-auto no-scrollbar">
-                {findUserList?.map((userDetails) => (
-                    <FindUserItem
-                        key={userDetails.id}
-                        userDetails={userDetails}
-                    />
-                ))}
+                {findUserList && findUserList.length > 0 ? (
+                    findUserList?.map((userDetails) => (
+                        <FindUserItem
+                            key={userDetails.id}
+                            userDetails={userDetails}
+                        />
+                    ))
+                ) : chatLoading ? (
+                    <Loader className=" animate-loading" />
+                ) : (
+                    "No Result"
+                )}
             </div>
         </div>
     );
