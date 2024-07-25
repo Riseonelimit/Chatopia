@@ -1,11 +1,12 @@
 import { UserButton } from "@clerk/clerk-react";
-import { Bell, Paintbrush, UserPlus, X } from "lucide-react";
+import { Bell, Paintbrush, UserPlus, Users, X } from "lucide-react";
 import { useState } from "react";
 import { useDialogBox } from "../../hooks/useDialogBox";
 import useSocket from "../../hooks/useSocket";
 import useUserData from "../../hooks/useUserData";
-import { BoxType } from "../../providers/DialogBoxProvider";
 import { THEME } from "../../types/user";
+import Tooltip from "../message/Tooltip";
+import { BoxType } from "../../types/chat";
 
 const ChatNavbar = () => {
     const { isConnected, socket } = useSocket();
@@ -40,40 +41,56 @@ const ChatNavbar = () => {
                     🟡 Polling 1s
                 </h2>
             )}
-            <div className="p-2 rounded-xl border-[1px] border-primary hover:cursor-pointer">
+            <div className="p-2 rounded-xl flexbox flex-col group border-[1px] border-primary hover:cursor-pointer">
                 <Bell
                     absoluteStrokeWidth
-                    className=" text-secondary/70 hover:text-white duration-150"
+                    className=" text-secondary/70 group-hover:text-white duration-150"
                 />
+                <Tooltip message="Notifications" />
             </div>
-            <div className="p-2 rounded-xl border-[1px] border-primary hover:cursor-pointer">
+            <div className="p-2 rounded-xl flexbox flex-col border-[1px] border-primary hover:cursor-pointer group">
                 <UserPlus
                     onClick={() => {
                         setIsOpen(true);
                         setBoxType(BoxType.ADD_FRIEND);
                     }}
                     absoluteStrokeWidth
-                    className=" text-secondary/70 hover:text-white duration-150"
+                    className=" text-secondary/70 group-hover:text-white duration-150"
                 />
+                <Tooltip message="New Contact" />
+            </div>
+            <div className="p-2 rounded-xl flexbox flex-col border-[1px] border-primary hover:cursor-pointer group">
+                <Users
+                    onClick={() => {
+                        setIsOpen(true);
+                        setBoxType(BoxType.CREATE_GROUP);
+                    }}
+                    absoluteStrokeWidth
+                    className=" text-secondary/70 group-hover:text-white duration-150"
+                />
+                <Tooltip message="New Group" />
             </div>
             <div className=" relative flexbox ">
                 <div
                     onClick={() => setThemeBox(!themeBox)}
-                    className={`p-2 rounded-xl border-[1px] hover:cursor-pointer ${
+                    className={`p-2 rounded-xl border-[1px] hover:cursor-pointer flexbox relative flex-col group ${
                         themeBox ? "border-red-500" : "border-primary"
                     }`}
                 >
                     {themeBox ? (
                         <X absoluteStrokeWidth className=" text-red-500" />
                     ) : (
-                        <Paintbrush
-                            absoluteStrokeWidth
-                            className=" text-secondary/70 hover:text-white duration-150"
-                        />
+                        <>
+                            <Paintbrush
+                                absoluteStrokeWidth
+                                className=" text-secondary/70 group-hover:text-white duration-150"
+                            />
+                            <Tooltip message="Themes" />
+                        </>
                     )}
                 </div>
                 {themeBox ? (
-                    <div className=" p-2 absolute z-[99] -bottom-[150%] flexbox gap-3 rounded-2xl border-primary border-[1px] bg-background/60 animate-fade-in ">
+                    <div className=" p-2 absolute z-[99] -bottom-[150%] flexbox gap-3 rounded-2xl  border-primary border-[1px] bg-background/60 animate-fade-in ">
                         {themeEntries.map((theme, idx) => (
                             <button
                                 key={idx}

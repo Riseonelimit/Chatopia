@@ -1,15 +1,11 @@
 import { ReactNode, createContext, useState } from "react";
+import { BoxType } from "../types/chat";
 
 interface DialogModelContextProps {
     isOpen: boolean;
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
     boxType: BoxType | null;
     setBoxType: React.Dispatch<React.SetStateAction<BoxType | null>>;
-}
-
-export enum BoxType {
-    ADD_FRIEND = "ADD_FRIEND",
-    REMOVE_FRIEND = "REMOVE_FRIEND",
 }
 
 export const DialogBoxContext = createContext<DialogModelContextProps>({

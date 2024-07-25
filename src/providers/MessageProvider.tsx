@@ -26,7 +26,10 @@ const MessageProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         socket?.on(
             `chat:receive-message:${userInfo?.id}`,
+
             (message: ChatMessage) => {
+                console.log("receive message");
+
                 setMessageArray([...messageArray, message]);
             }
         );
@@ -36,7 +39,8 @@ const MessageProvider = ({ children }: { children: ReactNode }) => {
         });
 
         return () => {
-            socket?.off(`chat:receive-message:${localStorage.getItem("uuid")}`);
+            socket?.off(`chat:receive-message:${userInfo?.id}`, () => {});
+            socket?.off(`chat:get-all-message`, () => {});
         };
     }, [socket, messageArray, userInfo]);
 

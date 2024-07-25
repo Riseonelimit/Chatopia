@@ -6,7 +6,7 @@ import { ReactProps } from "../types/react";
 interface SocketContext {
     socket: Socket | null;
     isConnected: boolean;
-    sendMessage?: (chatId: string, message: object) => void;
+    sendMessage?: (message: object) => void;
     receiveMessage?: (chatId: string, message: string) => void;
 }
 
@@ -38,7 +38,7 @@ const SocketProvider = ({ children }: ReactProps) => {
         });
         connection.on("disconnect", () => {
             console.log("even-disconnect");
-            
+
             setIsConnected(false);
         });
 
@@ -50,8 +50,8 @@ const SocketProvider = ({ children }: ReactProps) => {
     }, [isAuth, userInfo?.id]);
 
     const sendMessage = useCallback(
-        (chatId: string, message: object) => {
-            socket?.emit(`chat:send-message:${chatId}`, message);
+        (message: object) => {
+            socket?.emit(`chat:send-message`, message);
         },
         [socket]
     );

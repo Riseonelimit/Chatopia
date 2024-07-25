@@ -7,13 +7,43 @@ import { ChatMessage, MessageType } from "../types/chat";
 import { filterCurrentUser } from "../utils/helper";
 
 const MessageInput = () => {
+    const { socket } = useSocket();
+
     const [chatMessage, setChatMessage] = useState("");
+    const [isTyping, setIsTyping] = useState<boolean>(false);
 
     const { currentChatInfo } = useChat();
     const { messageArray, setMessageArray, setLastMessage } = useMessage();
 
     const { userInfo } = useUserData();
     const { sendMessage } = useSocket();
+
+    const debounced = (callback: any, delay = 1000) => {
+        let timeout: any;
+        return (...args: any) => {
+            clearTimeout(timeout);
+            setTimeout(() => {
+                if (!isTyping) {
+                    callback(...args);
+                    setIsTyping(true);
+                } else {
+                    socket?.emit(`chat:typing`, {
+                        chatId: currentChatInfo?.id,
+                        receiverId: chatUser.id,
+                        isTyping: false,
+                    });
+                    setIsTyping(false);
+                }
+            }, delay);
+        };
+    };
+    const typingEvent = debounced(() => {
+        socket?.emit(`chat:typing`, {
+            chatId: currentChatInfo?.id,
+            receiverId: chatUser.id,
+            isTyping: true,
+        });
+    });
 
     if (!currentChatInfo) return null;
     const chatUser = filterCurrentUser(currentChatInfo.participants, userInfo);
@@ -23,7 +53,11 @@ const MessageInput = () => {
             <textarea
                 value={chatMessage}
                 placeholder={`Type a message...`}
-                onChange={(e) => setChatMessage(e.target.value.trimStart())}
+                onChange={(e) => {
+                    typingEvent();
+
+                    setChatMessage(e.target.value.trimStart());
+                }}
                 className=" outline-none resize-none bg-transparent  w-full self-center"
                 rows={1}
             />
@@ -39,6 +73,7 @@ const MessageInput = () => {
                     // console.log(ref.current);
 
                     const message: ChatMessage = {
+                        id: "",
                         chatId: currentChatInfo?.id || "",
                         senderId: userInfo?.id || "",
                         receiverId: chatUser.id,
@@ -49,10 +84,10 @@ const MessageInput = () => {
                         isDeleted: false,
                         isSeen: false,
                     };
-                    if (sendMessage) sendMessage(message.senderId, message);
+                    if (sendMessage) sendMessage(message);
                     setLastMessage(message);
                     setMessageArray([...messageArray, message]);
-                    console.log("done");
+                    setChatMessage("");
                 }}
                 className={`ml-auto primary-btn h-full ${
                     chatMessage

@@ -17,7 +17,9 @@ export interface Profile {
 export type InsertUser = Omit<User, "id" | "Profile"> & {
     Profile: Omit<Profile, "id">;
 };
-
+export type UserFriends = {
+    friend: User;
+};
 export type UserSearchList = Pick<User, "name" | "id" | "Profile"> & {
     Profile: Pick<Profile, "image">;
 };
@@ -34,6 +36,7 @@ export interface Chat {
     lastMessageId?: string;
     createdAt?: Date;
     updatedAt?: Date;
+    isTyping?: boolean | false;
     participants: Omit<User[], "createdAt" | "updatedAt" | "Profile"> & {
         Profile: Pick<Profile, "image">;
     };

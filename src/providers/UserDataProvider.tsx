@@ -4,17 +4,17 @@ import { useNavigate } from "react-router-dom";
 import { addUser } from "../api/POST";
 import { authUser } from "../api/auth/user";
 import useSocket from "../hooks/useSocket";
-import { Chat, InsertUser, THEME, User } from "../types/user";
+import { Chat, InsertUser, THEME, User, UserFriends } from "../types/user";
 
 interface UserContext {
     isAuth: boolean;
     userInfo: User | null;
-    friendList: User[] | null;
+    friendList: UserFriends[] | null;
     userChats: Chat[] | null;
     theme: THEME;
     setIsAuth: React.Dispatch<React.SetStateAction<boolean>>;
     setUserInfo: React.Dispatch<React.SetStateAction<User | null>>;
-    setFriendList: React.Dispatch<React.SetStateAction<User[] | null>>;
+    setFriendList: React.Dispatch<React.SetStateAction<UserFriends[]>>;
     setUserChats: React.Dispatch<React.SetStateAction<Chat[] | null>>;
     setTheme: React.Dispatch<React.SetStateAction<THEME>>;
 }
@@ -23,7 +23,7 @@ export const UserDataContext = createContext<UserContext>({
     isAuth: false,
     theme: THEME.DEFAULT,
     userInfo: null,
-    friendList: null,
+    friendList: [],
     userChats: null,
     setIsAuth: () => {},
     setUserInfo: () => {},
@@ -35,6 +35,7 @@ export const UserDataContext = createContext<UserContext>({
 export interface ResultData {
     userInfo: User;
     userChats: Chat[];
+    userFriends: UserFriends[];
 }
 
 const UserDataProvider = ({ children }: { children: ReactNode }) => {
@@ -43,7 +44,7 @@ const UserDataProvider = ({ children }: { children: ReactNode }) => {
     const [theme, setTheme] = useState<THEME>(cacheTheme || THEME.DEFAULT);
     const [isAuth, setIsAuth] = useState<boolean>(false);
     const [userInfo, setUserInfo] = useState<User | null>(null);
-    const [friendList, setFriendList] = useState<User[] | null>(null);
+    const [friendList, setFriendList] = useState<UserFriends[]>([]);
     const [userChats, setUserChats] = useState<Chat[] | null>(null);
 
     const navigate = useNavigate();
@@ -60,9 +61,12 @@ const UserDataProvider = ({ children }: { children: ReactNode }) => {
 
             if (res.success && res.data) {
                 setIsAuth(true);
+                setTheme(res.data?.userInfo.Profile.theme);
                 setUserInfo(res.data?.userInfo);
                 setUserChats(res.data?.userChats);
-                setTheme(res.data?.userInfo.Profile.theme);
+                setFriendList(res.data?.userFriends);
+                console.log(res.data?.userChats);
+
                 // navigate("/dashboard", { replace: true });
             } else {
                 const userData: InsertUser = {
@@ -88,9 +92,8 @@ const UserDataProvider = ({ children }: { children: ReactNode }) => {
             socket?.disconnect();
             setIsAuth(false);
         }
-    }, [user, navigate, isAuth, isSignedIn, socket, cacheTheme]);
+    }, [user, navigate, isAuth, isSignedIn, socket, cacheTheme, userChats]);
 
-    useEffect(() => {}, [isSignedIn, user]);
     return (
         <UserDataContext.Provider
             value={{

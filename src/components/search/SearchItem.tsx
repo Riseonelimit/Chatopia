@@ -1,10 +1,12 @@
 import { LoaderCircle } from "lucide-react";
 import { useState } from "react";
-import { createNewChat } from "../api/POST";
-import useUserData from "../hooks/useUserData";
-import { UserSearchList } from "../types/user";
+import { createNewChat } from "../../api/POST";
+import useUserData from "../../hooks/useUserData";
+import { UserSearchList } from "../../types/user";
+import { useDialogBox } from "../../hooks/useDialogBox";
 
-const FindUserItem = ({ userDetails }: { userDetails: UserSearchList }) => {
+const SearchItem = ({ userDetails }: { userDetails: UserSearchList }) => {
+    const { setIsOpen } = useDialogBox();
     const { userInfo, userChats, setUserChats } = useUserData();
     const [loading, setLoading] = useState<boolean>(false);
     const [buttonStatus, setButtonStatus] = useState<string>("initial");
@@ -20,6 +22,7 @@ const FindUserItem = ({ userDetails }: { userDetails: UserSearchList }) => {
                 setButtonStatus("added");
             }
             setLoading(false);
+            setIsOpen(false);
         } catch (error) {
             setLoading(false);
             console.error(error);
@@ -58,4 +61,4 @@ const FindUserItem = ({ userDetails }: { userDetails: UserSearchList }) => {
     );
 };
 
-export default FindUserItem;
+export default SearchItem;

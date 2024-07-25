@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { CSSTransition } from "react-transition-group";
 import { useDialogBox } from "../../hooks/useDialogBox";
 import AddFriendModel from "./AddFriendModel";
+import CreateGroupModel from "./CreateGroupModel";
 
 export const DialogBox = () => {
     const nodeRef = useRef(null);
@@ -20,7 +21,11 @@ export const DialogBox = () => {
                 ref={nodeRef}
                 className=" absolute w-full h-full flexbox z-[99] bg-background/60 top-0    "
             >
-                {boxType == "ADD_FRIEND" ? <AddFriendModel /> : null}
+                {boxType == "ADD_FRIEND" ? (
+                    <AddFriendModel />
+                ) : boxType == "CREATE_GROUP" ? (
+                    <CreateGroupModel />
+                ) : null}
             </div>
         </CSSTransition>
     );

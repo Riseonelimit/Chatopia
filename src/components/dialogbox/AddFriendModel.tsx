@@ -4,7 +4,7 @@ import useChat from "../../hooks/useChat";
 import { useDialogBox } from "../../hooks/useDialogBox";
 import useSocket from "../../hooks/useSocket";
 import useUserData from "../../hooks/useUserData";
-import FindUserItem from "../FindUserItem";
+import SearchItem from "../search/SearchItem";
 
 const AddFriendModel = () => {
     const { setBoxType, setIsOpen } = useDialogBox();
@@ -58,7 +58,7 @@ const AddFriendModel = () => {
             <div className=" px-2 py-2 flexbox flex-col justify-start gap-2 bg-background/50 h-[40rem] w-full rounded-2xl overflow-y-auto no-scrollbar">
                 {findUserList && findUserList.length > 0 ? (
                     findUserList?.map((userDetails) => (
-                        <FindUserItem
+                        <SearchItem
                             key={userDetails.id}
                             userDetails={userDetails}
                         />

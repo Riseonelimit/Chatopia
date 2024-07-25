@@ -22,11 +22,11 @@ const ChatBox = () => {
             inline: "nearest",
         });
     }, [messageArray]);
-    
+
 
     if (!currentChatInfo || currentChatInfo == null) {
         return (
-            <div className=" p-3 w-full h-full relative col-span-3 bg-primary/20 rounded-2xl flexbox flex-col gap-8  overflow-hidden">
+            <div className=" p-3 w-full h-[85vh relative col-span-3 bg-primary/20 rounded-2xl flexbox flex-col gap-8  overflow-hidden">
                 <MessageCircleMore
                     size={150}
                     strokeWidth={1.4}
