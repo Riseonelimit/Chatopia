@@ -2,8 +2,6 @@ import { ChatMessage } from "../../types/chat";
 import Tooltip from "../message/Tooltip";
 
 const ReceiverChat = ({ messageData }: { messageData: ChatMessage }) => {
-    console.log(messageData);
-
     return (
         <div className="flexbox items-center self-start w-full group gap-2">
             {messageData.isGroup ? (

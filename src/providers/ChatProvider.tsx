@@ -1,7 +1,8 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
 import useSocket from "../hooks/useSocket";
 import useUserData from "../hooks/useUserData";
-import { Chat, UserSearchList } from "../types/user";
+import { UserSearchList } from "../types/user";
+import { Chat } from "../types/chat";
 
 interface ChatContext {
     onlineUsers: string[] | null;

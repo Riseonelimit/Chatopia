@@ -1,5 +1,19 @@
 import { Profile, User } from "./user";
 
+export interface Chat {
+    id: string;
+    isGroup: boolean;
+    groupName: string;
+    chatIcon: string;
+    lastMessageId?: string;
+    createdAt?: Date;
+    updatedAt?: Date;
+    isTyping?: boolean | false;
+    participants: Omit<User[], "createdAt" | "updatedAt" | "Profile"> & {
+        Profile: Pick<Profile, "image">;
+    };
+}
+
 export type ChatMessage = {
     id: string;
     chatId: string;
@@ -16,6 +30,7 @@ export type ChatMessage = {
 };
 
 export type AddMessage = Omit<ChatMessage, "id" | "isSeen" | "isDeleted">;
+
 export enum MessageType {
     TEXT,
     IMAGE,

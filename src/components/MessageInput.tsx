@@ -83,8 +83,21 @@ const MessageInput = () => {
                         createdAt: new Date(),
                         isDeleted: false,
                         isSeen: false,
+                        sender: {
+                            name: userInfo?.name,
+                            Profile: {
+                                image: userInfo?.Profile.image,
+                            },
+                        },
                     };
-                    if (sendMessage) sendMessage(message);
+                    const participants = currentChatInfo.participants.map(
+                        (user) => user.id
+                    );
+                    console.log(participants);
+                    if (sendMessage)
+                        sendMessage(message, {
+                            participants,
+                        });
                     setLastMessage(message);
                     setMessageArray([...messageArray, message]);
                     setChatMessage("");
