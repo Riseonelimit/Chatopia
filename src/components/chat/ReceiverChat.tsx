@@ -3,7 +3,7 @@ import Tooltip from "../message/Tooltip";
 
 const ReceiverChat = ({ messageData }: { messageData: ChatMessage }) => {
     return (
-        <div className="flexbox items-center self-start w-full group gap-2">
+        <div className="flexbox items-center relative self-start w-full group gap-2">
             {messageData.isGroup ? (
                 <>
                     <img
@@ -31,3 +31,4 @@ const ReceiverChat = ({ messageData }: { messageData: ChatMessage }) => {
 };
 
 export default ReceiverChat;
+    
