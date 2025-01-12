@@ -22,18 +22,17 @@ const MessageInput = () => {
         let timeout: any;
         return (...args: any) => {
             clearTimeout(timeout);
-            setTimeout(() => {
-                if (!isTyping) {
-                    callback(...args);
-                    setIsTyping(true);
-                } else {
-                    socket?.emit(`chat:typing`, {
-                        chatId: currentChatInfo?.id,
-                        receiverId: chatUser.id,
-                        isTyping: false,
-                    });
-                    setIsTyping(false);
-                }
+            if (!isTyping) {
+                callback(...args);
+                setIsTyping(true);
+            }
+            timeout = setTimeout(() => {
+                socket?.emit(`chat:typing`, {
+                    chatId: currentChatInfo?.id,
+                    receiverId: chatUser.id,
+                    isTyping: false,
+                });
+                setIsTyping(false);
             }, delay);
         };
     };
@@ -43,6 +42,7 @@ const MessageInput = () => {
             receiverId: chatUser.id,
             isTyping: true,
         });
+        console.log("typing");
     });
 
     if (!currentChatInfo) return null;

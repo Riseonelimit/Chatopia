@@ -3,8 +3,8 @@ import useChat from "../hooks/useChat";
 import useMessage from "../hooks/useMessage";
 import useSocket from "../hooks/useSocket";
 import useUserData from "../hooks/useUserData";
-import { Chat } from "../types/user";
 import { filterCurrentUser } from "../utils/helper";
+import { Chat } from "../types/chat";
 
 const Contact = ({
     chatInfo,
