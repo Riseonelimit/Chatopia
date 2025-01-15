@@ -32,11 +32,11 @@ const Contact = ({
     };
 
     const chatUser = filterCurrentUser(chatInfo.participants, userInfo);
-
+ 
     return (
         <div
             onClick={setCurrentChat}
-            className={`p-2 w-full h-[5rem] group relative grid grid-cols-5 gap-2 bg-primary/20 rounded-2xl hover:bg-primary border-[1px] border-primary duration-150 hover:scale-[1.03] animate-fade-top-delayed delay-150 `}
+            className={`p-2 w-full h-[5rem] group relative grid grid-cols-5 gap-2 bg-primary/20 rounded-2xl hover:bg-primary border-[1px] border-primary  hover:scale-[1.02] animate-fade-top-delayed  `}
         >
             <div className="bg-red-300 col-span-1 w-full  flexbox rounded-xl overflow-hidden">
                 <img
