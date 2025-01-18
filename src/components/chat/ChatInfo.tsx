@@ -14,7 +14,7 @@ const ChatInfo = () => {
 
     return (
         <div className="px-2 py-4 w-[14%] -right-[15%] top-0 absolute  z-50 flexbox flex-col gap-2 bg-primary/10 rounded-2xl hover:bg-primary/40 border-[1px] border-primary duration-150 ">
-            <div className="bg-red-300 col-span-1 w-full h-[6rem]  flexbox rounded-xl overflow-hidden ">
+            <div className="bg-red-300 col-span-1 w-full h-[6rem]  flexbox rou nded-xl overflow-hidden ">
                 <img
                     src={
                         currentChatInfo.isGroup
